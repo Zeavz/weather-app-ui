@@ -21,6 +21,64 @@ const Home = () => {
     const searches = getSavedResults();
     const items = [];
 
+    const search = function (query) {
+        query = formatDataHelper(query);
+        loading = true;
+        fetchWeather(query)
+            .then((response) => {
+                saveSearch(query);
+                dispatch(setWeather(response));
+                loading = false;
+                history.push('/details');
+            })
+            .catch((err) => {
+                console.log(err);
+                loading = false;
+                setQuery('');
+                // TODO have a nicer error page or modal to show user or do we want to retry on 429 for i.e?
+                alert(err);
+            });
+    };
+
+    function saveSearch(query) {
+        let queryObj = translateQueryToObjHelper(query);
+        // Ensure the search result doesn't already exist before adding it
+        let result = searches.find((obj) => {
+            return searchCompareHelper(obj, queryObj);
+        });
+        if (result === undefined) {
+            searches.push(queryObj);
+            saveSearchResults(searches);
+        }
+    }
+
+    // Ideally this would have been a proper class that could have handled these kinds of operations
+    function translateQueryToObjHelper(query) {
+        return {
+            city: query.split(',')[0].trim(),
+            state: query.split(',')[1].trim(),
+            country: query.split(',')[2].trim(),
+        };
+    }
+
+    // Again if this was a proper class could have done comparisons within it as a function
+    function searchCompareHelper(compare1, compare2) {
+        return (
+            compare1.city === compare2.city &&
+            compare1.state === compare2.state &&
+            compare1.country === compare2.country
+        );
+    }
+
+    // If we don't have the query structure of {x,y,z} append commas
+    function formatDataHelper(query) {
+        let result = (query.match(/,/g) || []).length;
+        if (result < 2) {
+            return query + ','.repeat(2 - result);
+        }
+        return query;
+    }
+
     for (const [index, value] of searches.entries()) {
         items.push(
             <button
@@ -34,52 +92,8 @@ const Home = () => {
                     );
                 }}
             >
-                <span>{`${value.city}, ${value.country}`}</span>
+                <span>{`${value.city}, ${value.state}`}</span>
             </button>,
-        );
-    }
-
-    const search = function (query) {
-        loading = true;
-        fetchWeather(query)
-            .then((response) => {
-                saveSearch(query);
-                dispatch(setWeather(response));
-                loading = false;
-                history.push('/home');
-            })
-            .catch((err) => {
-                loading = false;
-                setQuery('');
-                // TODO have a nicer error page or modal to show user
-                alert(err);
-            });
-    };
-
-    function saveSearch(query) {
-        let queryObj = translateQueryToObj(query);
-        let result = searches.find((obj) => {
-            return searchesEqual(obj, queryObj);
-        });
-        if (result === undefined) {
-            searches.push(queryObj);
-            saveSearchResults(searches);
-        }
-    }
-
-    function translateQueryToObj(query) {
-        return {
-            city: query.split(',')[0].trim(),
-            state: query.split(',')[1].trim(),
-            country: query.split(',')[2].trim(),
-        };
-    }
-
-    function searchesEqual(compare1, compare2) {
-        return (
-            compare1.city === compare2.city &&
-            compare1.state === compare2.state &&
-            compare1.country === compare2.country
         );
     }
 
