@@ -32,9 +32,10 @@ const Home = () => {
                 history.push('/details');
             })
             .catch((err) => {
+                console.log(err);
                 loading = false;
                 setQuery('');
-                // TODO have a nicer error page or modal to show user
+                // TODO have a nicer error page or modal to show user or do we want to retry on 429 for i.e?
                 alert(err);
             });
     };
