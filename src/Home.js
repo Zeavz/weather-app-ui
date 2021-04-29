@@ -3,6 +3,7 @@ import { fetchWeather } from './weather-api/fetchWeather';
 import { useDispatch } from 'react-redux';
 import { setWeather } from './weather-store/actions';
 import { useHistory } from 'react-router-dom';
+import Autocomplete from 'react-google-autocomplete';
 import './App.css';
 
 const Home = () => {
@@ -55,14 +56,14 @@ const Home = () => {
 
     return (
         <div className="subContainer">
-            <input
-                type="text"
+            <Autocomplete
                 className="search"
-                placeholder="Search..."
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
+                apiKey="AIzaSyC33phkDRFWm18uyT9sDC_7NKyyEFVoPJc"
+                onPlaceSelected={(place) => {
+                    setQuery(place.formatted_address);
+                }}
             />
-            <button onClick={(e) => search(query)}>Search</button>
+            ;<button onClick={(e) => search(query)}>Search</button>
             {items}
         </div>
     );
