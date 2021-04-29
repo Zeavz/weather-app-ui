@@ -1,13 +1,5 @@
 const RECENT_SEARCH_LOCAL_KEY = 'recentSearches';
 
-class searchItem {
-    constructor(city, state, country) {
-        this.city = city;
-        this.state = state;
-        this.country = country;
-    }
-}
-
 export function getSavedResults() {
     let data = localStorage.getItem(RECENT_SEARCH_LOCAL_KEY);
     if (!data) {
