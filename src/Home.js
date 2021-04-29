@@ -51,7 +51,7 @@ const Home = () => {
             .catch((err) => {
                 loading = false;
                 setQuery('');
-                console.log(err);
+                // TODO have a nicer error page or modal to show user
                 alert(err);
             });
     };
