@@ -1,11 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import './App.css';
 
 const Details = () => {
     const selector = useSelector((state) => state);
     return (
-        <div className="city">
+        <div className="details">
             <h2 className="city-name">
                 <span>{selector.weatherReducer.name}</span>
                 <sup>{selector.weatherReducer.country}</sup>
@@ -20,7 +21,7 @@ const Details = () => {
                     src={`https://openweathermap.org/img/wn/${selector.weatherReducer.weatherIcon}@2x.png`}
                     alt={selector.weatherReducer.description}
                 />
-                <p>{selector.weatherReducer.description}</p>
+                <p>{selector.weatherReducer.weatherDescription}</p>
             </div>
             <Link to="/">
                 <button>Back</button>

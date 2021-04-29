@@ -8,11 +8,9 @@ export default function App() {
     const background = location.state && location.state.background;
 
     return (
-        <div className="w-full bg-gray-200 px-4 relative">
-            <Switch location={background || location}>
-                <Route path="/" exact component={Home} />
-                <Route path="/home" exact component={Details} />
-            </Switch>
-        </div>
+        <Switch location={background || location}>
+            <Route path="/" exact component={Home} />
+            <Route path="/home" exact component={Details} />
+        </Switch>
     );
 }

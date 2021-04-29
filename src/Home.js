@@ -1,33 +1,60 @@
 import React, { useState } from 'react';
 import { fetchWeather } from './weather-api/fetchWeather';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { setWeather } from './weather-store/actions';
 import { useHistory } from 'react-router-dom';
+import './App.css';
 
 const Home = () => {
     const dispatch = useDispatch();
-    const selector = useSelector((state) => state);
     const history = useHistory();
     const [query, setQuery] = useState('');
+    let loading = false;
 
-    const search = async (e) => {
-        console.log(query);
-        let data = '';
-        try {
-            data = await fetchWeather(query);
-        } catch (err) {
-            console.log(err);
-            alert(err);
-        }
-        if (!!data) {
-            dispatch(setWeather(data));
-            console.log(selector);
-            history.push('/home');
-        }
+    const builtInSearches = [
+        { city: 'Toronto', state: 'Ontario', country: 'Canada' },
+        { city: 'Mississauga', state: 'Ontario', country: 'Canada' },
+        { city: 'Hamilton', state: 'Ontario', country: 'Canada' },
+    ];
+    const items = [];
+
+    for (const [index, value] of builtInSearches.entries()) {
+        items.push(
+            // <div className="city">
+            <button
+                key={index}
+                type="button"
+                disabled={loading}
+                className="city-button"
+                onClick={(e) => {
+                    search(
+                        value.city + ',' + value.state + ',' + value.country,
+                    );
+                }}
+            >
+                <span>{value.city}</span>
+            </button>,
+            // </div>,
+        );
+    }
+
+    const search = function (query) {
+        loading = true;
+        fetchWeather(query)
+            .then((response) => {
+                dispatch(setWeather(response));
+                loading = false;
+                history.push('/home');
+            })
+            .catch((err) => {
+                loading = false;
+                console.log(err);
+                alert(err);
+            });
     };
 
     return (
-        <div>
+        <div className="subContainer">
             <input
                 type="text"
                 className="search"
@@ -35,7 +62,8 @@ const Home = () => {
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
             />
-            <button onClick={search}>Search</button>
+            <button onClick={(e) => search(query)}>Search</button>
+            {items}
         </div>
     );
 };
