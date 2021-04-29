@@ -11,7 +11,7 @@ You can follow the generic react instructions I kept below to run the app locall
 
 you can also find the api service here: https://github.com/Zeavz/weather-app-api, same running steps apply, feel free to make changes and deploy to `develop`. The api deploys to a `heroku` server instead: https://jenis-weather-api.herokuapp.com/
 
-The weather data is powered by https://openweathermap.org/, went with this one because of their weather icon support
+The weather data is powered by https://openweathermap.org/, went with this one because of their weather icon support 🦜
 
 ## backlog/learnings:
 - Adding input validators on the google search bar
