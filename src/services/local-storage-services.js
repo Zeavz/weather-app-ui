@@ -14,7 +14,7 @@ export function getSavedResults() {
 }
 
 export function saveSearchResults(data) {
-    if (data.length > 10) {
+    if (data.length >= 10) {
         alert(
             'love that you like using me so much but imma go ahead and slice your searches',
         );

@@ -10,7 +10,7 @@ export default function App() {
     return (
         <Switch location={background || location}>
             <Route path="/" exact component={Home} />
-            <Route path="/home" exact component={Details} />
+            <Route path="/details" exact component={Details} />
         </Switch>
     );
 }
