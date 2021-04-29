@@ -5,23 +5,24 @@ import { setWeather } from './weather-store/actions';
 import { useHistory } from 'react-router-dom';
 import Autocomplete from 'react-google-autocomplete';
 import './App.css';
+import {
+    getSavedResults,
+    saveSearchResults,
+} from './services/local-storage-services';
 
 const Home = () => {
     const dispatch = useDispatch();
     const history = useHistory();
     const [query, setQuery] = useState('');
+
+    // TODO add a loading animation
     let loading = false;
 
-    const builtInSearches = [
-        { city: 'Toronto', state: 'Ontario', country: 'Canada' },
-        { city: 'Mississauga', state: 'Ontario', country: 'Canada' },
-        { city: 'Hamilton', state: 'Ontario', country: 'Canada' },
-    ];
+    const searches = getSavedResults();
     const items = [];
 
-    for (const [index, value] of builtInSearches.entries()) {
+    for (const [index, value] of searches.entries()) {
         items.push(
-            // <div className="city">
             <button
                 key={index}
                 type="button"
@@ -33,9 +34,8 @@ const Home = () => {
                     );
                 }}
             >
-                <span>{value.city}</span>
+                <span>{`${value.city}, ${value.country}`}</span>
             </button>,
-            // </div>,
         );
     }
 
@@ -43,16 +43,45 @@ const Home = () => {
         loading = true;
         fetchWeather(query)
             .then((response) => {
+                saveSearch(query);
                 dispatch(setWeather(response));
                 loading = false;
                 history.push('/home');
             })
             .catch((err) => {
                 loading = false;
+                setQuery('');
                 console.log(err);
                 alert(err);
             });
     };
+
+    function saveSearch(query) {
+        let queryObj = translateQueryToObj(query);
+        let result = searches.find((obj) => {
+            return searchesEqual(obj, queryObj);
+        });
+        if (result === undefined) {
+            searches.push(queryObj);
+            saveSearchResults(searches);
+        }
+    }
+
+    function translateQueryToObj(query) {
+        return {
+            city: query.split(',')[0].trim(),
+            state: query.split(',')[1].trim(),
+            country: query.split(',')[2].trim(),
+        };
+    }
+
+    function searchesEqual(compare1, compare2) {
+        return (
+            compare1.city === compare2.city &&
+            compare1.state === compare2.state &&
+            compare1.country === compare2.country
+        );
+    }
 
     return (
         <div className="subContainer">
@@ -63,8 +92,10 @@ const Home = () => {
                     setQuery(place.formatted_address);
                 }}
             />
-            ;<button onClick={(e) => search(query)}>Search</button>
-            {items}
+            <button className="search-button" onClick={(e) => search(query)}>
+                Go
+            </button>
+            <div className="search-list">{items}</div>
         </div>
     );
 };

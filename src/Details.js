@@ -8,10 +8,13 @@ const Details = () => {
     return (
         <div className="details">
             <h2 className="city-name">
-                <span>{selector.weatherReducer.name}</span>
-                <sup>{selector.weatherReducer.country}</sup>
+                <span>
+                    {selector.weatherReducer.name}
+                    {', '}
+                    {selector.weatherReducer.country}
+                </span>
             </h2>
-            <div className="city-temp">
+            <div className="temp">
                 {Math.round(selector.weatherReducer.temperature)}
                 <sup>&deg;C</sup>
             </div>
@@ -24,7 +27,7 @@ const Details = () => {
                 <p>{selector.weatherReducer.weatherDescription}</p>
             </div>
             <Link to="/">
-                <button>Back</button>
+                <button className="search-button back">Back</button>
             </Link>
         </div>
     );
