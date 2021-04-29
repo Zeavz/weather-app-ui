@@ -1,6 +1,6 @@
 # Welcome to my Weather App :)
 
-My first React project! 🙏
+New React project! 🙏
 
 The UI is deployed here: https://reverent-kepler-dc499d.netlify.app/
 
@@ -20,6 +20,7 @@ you can also find the api service here: https://github.com/Zeavz/weather-app-api
 - View on super wide monitors 👎
 - The downstream api only accepts queries in the format of `{city, state, country}` and it seems there are some cases where a google search will only have `{x,y}` which will return a 400 error... investigation required to see if that should or shouldn't be allowed 🤔
 
+**DISCLAIMER - Images and some of the css styles were found online, not all my original content  
 
 ---
 
