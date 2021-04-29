@@ -41,6 +41,7 @@ const Home = () => {
 
     function saveSearch(query) {
         let queryObj = translateQueryToObjHelper(query);
+        // Ensure the search result doesn't already exist before adding it
         let result = searches.find((obj) => {
             return searchCompareHelper(obj, queryObj);
         });
@@ -50,6 +51,7 @@ const Home = () => {
         }
     }
 
+    // Ideally this would have been a proper class that could have handled these kinds of operations
     function translateQueryToObjHelper(query) {
         return {
             city: query.split(',')[0].trim(),
@@ -58,6 +60,7 @@ const Home = () => {
         };
     }
 
+    // Again if this was a proper class could have done comparisons within it as a function
     function searchCompareHelper(compare1, compare2) {
         return (
             compare1.city === compare2.city &&
@@ -66,6 +69,7 @@ const Home = () => {
         );
     }
 
+    // If we don't have the query structure of {x,y,z} append commas
     function formatDataHelper(query) {
         let result = (query.match(/,/g) || []).length;
         if (result < 2) {
