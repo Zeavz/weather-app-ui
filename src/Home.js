@@ -100,7 +100,7 @@ const Home = () => {
         <div className="subContainer">
             <Autocomplete
                 className="search"
-                apiKey="{process.env.REACT_APP_CUSTOM_ENV_VAR}"
+                apiKey="AIzaSyC33phkDRFWm18uyT9sDC_7NKyyEFVoPJc"
                 onPlaceSelected={(place) => {
                     setQuery(place.formatted_address);
                 }}
